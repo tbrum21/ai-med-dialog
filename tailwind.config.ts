@@ -61,7 +61,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				medical: {
+					green: 'hsl(var(--medical-green))',
+					'green-hover': 'hsl(var(--medical-green-hover))',
+					white: 'hsl(var(--medical-white))'
+				},
+				chat: {
+					'user-bg': 'hsl(var(--chat-user-bg))',
+					'ai-bg': 'hsl(var(--chat-ai-bg))'
 				}
+			},
+			boxShadow: {
+				'soft': 'var(--shadow-soft)',
+				'card': 'var(--shadow-card)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
