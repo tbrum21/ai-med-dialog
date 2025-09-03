@@ -142,7 +142,12 @@ export const TeamTab = () => {
             <Card 
               key={case_.id} 
               className="shadow-card hover:shadow-lg transition-shadow cursor-pointer"
-              onClick={() => handleOpenCase(case_.id)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("Card clicked, opening case:", case_.id);
+                handleOpenCase(case_.id);
+              }}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
