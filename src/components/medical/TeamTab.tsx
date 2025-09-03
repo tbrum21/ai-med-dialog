@@ -1,13 +1,9 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Star, MessageCircle, Clock, Send } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
+import { Star, MessageCircle, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const sharedCases = [
   {
@@ -85,42 +81,10 @@ const sharedCases = [
 ];
 
 export const TeamTab = () => {
-  const [selectedCase, setSelectedCase] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newComment, setNewComment] = useState("");
-  const [userRating, setUserRating] = useState(0);
-
-  const selectedCaseData = sharedCases.find(c => c.id === selectedCase);
+  const navigate = useNavigate();
 
   const handleOpenCase = (caseId: string) => {
-    setSelectedCase(caseId);
-    setIsModalOpen(true);
-    setUserRating(0);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedCase(null);
-    setNewComment("");
-    setUserRating(0);
-  };
-
-  const handleRating = (rating: number) => {
-    setUserRating(rating);
-    toast({
-      title: "Avaliação enviada",
-      description: `Você avaliou esta discussão com ${rating} estrela${rating > 1 ? 's' : ''}.`,
-    });
-  };
-
-  const handleAddComment = () => {
-    if (!newComment.trim()) return;
-    
-    toast({
-      title: "Comentário adicionado",
-      description: "Seu comentário foi publicado com sucesso.",
-    });
-    setNewComment("");
+    navigate(`/case-debate/${caseId}`);
   };
 
   return (
@@ -226,137 +190,6 @@ export const TeamTab = () => {
         </div>
       </div>
 
-      {/* Case Detail Modal */}
-      <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          {selectedCaseData && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-xl font-semibold">
-                  {selectedCaseData.title}
-                </DialogTitle>
-                <div className="flex items-center space-x-3 mt-2">
-                  <Avatar>
-                    <AvatarFallback className="bg-primary text-white font-semibold">
-                      {selectedCaseData.avatarFallback}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium text-foreground">{selectedCaseData.author}</p>
-                    <p className="text-sm text-muted-foreground">{selectedCaseData.authorSpecialty}</p>
-                  </div>
-                  <Badge
-                    variant="secondary"
-                    className={`${
-                      selectedCaseData.status === "Resolvido"
-                        ? "bg-green-100 text-green-700 border-green-200"
-                        : "bg-yellow-100 text-yellow-700 border-yellow-200"
-                    }`}
-                  >
-                    {selectedCaseData.status}
-                  </Badge>
-                </div>
-              </DialogHeader>
-
-              <div className="space-y-6">
-                {/* Case Description */}
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Descrição do Caso</h3>
-                  <p className="text-muted-foreground">{selectedCaseData.description}</p>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {selectedCaseData.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className="bg-primary/10 text-primary border-primary/20"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Doctor Conversation */}
-                <div>
-                  <h3 className="font-semibold text-foreground mb-4">Discussão entre Médicos</h3>
-                  <div className="space-y-4 max-h-96 overflow-y-auto bg-muted/20 p-4 rounded-lg">
-                    {selectedCaseData.conversation.map((message, index) => (
-                      <div key={index} className="flex space-x-3">
-                        <Avatar className="w-8 h-8">
-                          <AvatarFallback className="bg-primary text-white text-xs font-semibold">
-                            {message.sender.split(" ")[1]?.substring(0, 2).toUpperCase() || "MD"}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <span className="text-sm font-medium text-foreground">{message.sender}</span>
-                            <span className="text-xs text-muted-foreground">{message.time}</span>
-                          </div>
-                          <div className="bg-card p-3 rounded-lg border">
-                            <p className="text-sm text-foreground">{message.message}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Rating Section */}
-                <div>
-                  <h3 className="font-semibold text-foreground mb-3">Avalie esta discussão</h3>
-                  <div className="flex items-center space-x-2 mb-4">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        onClick={() => handleRating(star)}
-                        className="transition-colors hover:scale-110"
-                      >
-                        <Star
-                          className={`w-6 h-6 ${
-                            star <= userRating
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "text-muted-foreground hover:text-yellow-400"
-                          }`}
-                        />
-                      </button>
-                    ))}
-                    {selectedCaseData.status === "Resolvido" && selectedCaseData.rating > 0 && (
-                      <span className="text-sm text-muted-foreground ml-4">
-                        Avaliação média: {selectedCaseData.rating}/5
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Add Comment */}
-                <div>
-                  <h3 className="font-semibold text-foreground mb-3">Adicionar Comentário</h3>
-                  <div className="space-y-3">
-                    <Textarea
-                      placeholder="Compartilhe sua opinião sobre este caso..."
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      className="min-h-[100px]"
-                    />
-                    <Button
-                      onClick={handleAddComment}
-                      disabled={!newComment.trim()}
-                      className="bg-primary hover:bg-primary-hover text-white"
-                    >
-                      <Send className="w-4 h-4 mr-2" />
-                      Publicar Comentário
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

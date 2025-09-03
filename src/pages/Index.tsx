@@ -14,7 +14,7 @@ const Index = () => {
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
               <Stethoscope className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-foreground">MedChat AI</h1>
+            <h1 className="text-xl font-bold text-foreground">SADM</h1>
           </div>
           <Button
             onClick={() => navigate("/login")}
@@ -31,8 +31,8 @@ const Index = () => {
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              IA Médica para Decisões
-              <span className="text-primary"> Clínicas Inteligentes</span>
+              Sistema de Apoio à
+              <span className="text-primary"> Decisão Médica</span>
             </h2>
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
               Assistente inteligente que auxilia profissionais da saúde na tomada de decisões, 
@@ -111,10 +111,10 @@ const Index = () => {
             <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
               <Stethoscope className="w-4 h-4 text-white" />
             </div>
-            <span className="font-semibold text-foreground">MedChat AI</span>
+            <span className="font-semibold text-foreground">SADM</span>
           </div>
           <p className="text-muted-foreground text-sm">
-            © 2024 MedChat AI. Assistente inteligente para profissionais da saúde.
+            © 2024 SADM. Sistema de apoio à decisão médica para profissionais da saúde.
           </p>
         </div>
       </footer>
